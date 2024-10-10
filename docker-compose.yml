@@ -1,0 +1,15 @@
+services:
+  api:
+    container_name: muzak-api
+    build: .
+    ports:
+      - "3000:3000"
+    command: npm run start
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: ./usr/src/app/src
+        - action: rebuild
+          path: package.json
+

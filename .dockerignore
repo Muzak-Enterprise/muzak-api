@@ -1,0 +1,19 @@
+# dev
+package-lock.json
+.vscode/*
+!.vscode/launch.json
+!.vscode/*.code-snippets
+.idea/workspace.xml
+.idea/usage.statistics.xml
+.idea/shelf
+
+# deps
+node_modules
+
+# logs
+logs/
+*.log
+npm-debug.log*
+
+# misc
+.DS_Store
