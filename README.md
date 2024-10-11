@@ -2,7 +2,8 @@
 
 ```sh
 npm install
-npm run dev
+docker-compose build --no-cache
+npm run watch
 ```
 
 open on [localhost](http://localhost:3000)

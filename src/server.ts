@@ -1,29 +1,35 @@
 import { serve } from "@hono/node-server";
-import { Hono } from "hono";
-import Redis from "ioredis";
-
-const app = new Hono();
-
-const redis = new Redis({
-  host: "muzak-redis",
-  port: 6379,
-});
+import { app, redis } from "./app";
 
 app.get("/up", async (c) => {
   if (await redis.get("is_redis_up")) {
-    return c.text("The API with redis cache is up, and the cache is loaded");
+    return c.json(
+      {
+        api: "up",
+        redis: "up",
+        cache: "loaded",
+      },
+      200
+    );
   }
 
   await redis.set("is_redis_up", "up");
 
-  return c.text("The API with redis cache is up, and the cache is set\nReload to a change");
+  return c.json(
+    {
+      api: "up",
+      redis: "up",
+      cache: "set",
+    },
+    201
+  );
 });
 
-const PORT = 3000;
+const APP_PORT = 3000;
 
 serve({
   fetch: app.fetch,
-  port: PORT,
+  port: APP_PORT,
 }).addListener("listening", () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${APP_PORT}`);
 });

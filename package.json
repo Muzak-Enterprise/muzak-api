@@ -1,7 +1,8 @@
 {
   "name": "muzak-api",
   "scripts": {
-    "start": "tsx watch src/server.ts"
+    "start": "tsx watch src/server.ts",
+    "watch": "docker-compose watch"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.1",
