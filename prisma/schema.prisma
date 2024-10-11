@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id           Int           @id @default(autoincrement())
+  firstName    String        @db.VarChar(127)
+  lastName     String        @db.VarChar(127)
+  email        String        @unique @db.VarChar(255)
+  password     String        @db.VarChar(255)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  addresses    Address[]
+  reservations Reservation[]
+  userGroups   UserGroups[]
+}
+
+model Address {
+  id           Int           @id @default(autoincrement())
+  userId       Int
+  name         String        @db.VarChar(255)
+  city         String        @db.VarChar(127)
+  postcode     String        @db.VarChar(5)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  reservations Reservation[]
+}
+
+model Group {
+  id               Int                @id @default(autoincrement())
+  description      String
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  groupGenres      GroupGenres[]
+  groupInstruments GroupInstruments[]
+  reservations     Reservation[]
+  userGroups       UserGroups[]
+}
+
+model UserGroups {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  groupId   Int
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  group     Group     @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model Genre {
+  id          Int           @id @default(autoincrement())
+  genre       String        @db.VarChar(63)
+  groupGenres GroupGenres[]
+}
+
+model Instrument {
+  id               Int                @id @default(autoincrement())
+  instrument       String             @db.VarChar(63)
+  groupInstruments GroupInstruments[]
+}
+
+model GroupGenres {
+  id        Int       @id @default(autoincrement())
+  groupId   Int
+  genreId   Int
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  genre     Genre     @relation(fields: [genreId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  group     Group     @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model GroupInstruments {
+  id           Int        @id @default(autoincrement())
+  groupId      Int
+  instrumentId Int
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  group        Group      @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  instrument   Instrument @relation(fields: [instrumentId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model Reservation {
+  id        Int                @id @default(autoincrement())
+  groupId   Int
+  userId    Int
+  addressId Int
+  date      DateTime
+  duration  Int
+  status    ReservationStatus @default(PENDING)
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+  addresse  Address            @relation(fields: [addressId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  group     Group              @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
