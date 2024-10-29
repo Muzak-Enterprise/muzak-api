@@ -1,0 +1,39 @@
+import { validator } from "hono/validator";
+import { z } from "zod";
+import { formValidator } from ".";
+import { authRulesEnum } from "../enums/fieldsRules";
+
+export const loginValidator = validator("form", (value, c) =>
+  formValidator(
+    value,
+    c,
+    z.object({
+      email: authRulesEnum.email,
+      password: authRulesEnum.password,
+    }),
+    "Vos identifiants de connexion sont incorrects",
+    404
+  )
+);
+
+export const registerValidator = validator("form", (value, c) =>
+  formValidator(
+    value,
+    c,
+    z.object({
+      firstName: authRulesEnum.name,
+      lastName: authRulesEnum.name,
+      email: authRulesEnum.email,
+      password: authRulesEnum.password,
+      passwordConfirmation: z.string(),
+    }),
+    {
+      firstName: "Le prénom doit contenir au moins 2 lettres",
+      lastName: "Le nom doit contenir au moins 2 lettres",
+      email: "L'adresse email est incorrecte",
+      password:
+        "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule et un chiffre",
+      passwordConfirmation: "Veuillez confirmer votre mot de passe",
+    }
+  )
+);

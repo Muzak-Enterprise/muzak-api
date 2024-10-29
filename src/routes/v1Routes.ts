@@ -1,8 +1,10 @@
 import { Hono } from "hono";
-import authRoutes from "./v1/authRoutes";
+import { login, register } from "../controllers/authController";
+import { loginValidator, registerValidator } from "../validators/authValidator";
 
 const v1Routes = new Hono();
 
-v1Routes.route("/auth", authRoutes);
+v1Routes.post("/auth/login", loginValidator, login);
+v1Routes.post("/auth/register", registerValidator, register);
 
 export default v1Routes;
