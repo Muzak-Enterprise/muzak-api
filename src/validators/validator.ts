@@ -9,7 +9,7 @@ import { ZodSchema } from "zod";
 // - If the errorMessages parameter is a string, it returns an object with the errors and the error message
 // - If the errorMessages parameter is an object, it returns an object with the errors and the corresponding error message
 // - If the errorMessages parameter is not provided, it returns an object with the errors and a default error message
-const formValidator = <T>(
+export const formValidator = <T>(
   value: Record<string, ParsedFormValue | ParsedFormValue[]>,
   c: Context,
   schema: ZodSchema<T>,
@@ -39,5 +39,3 @@ const formValidator = <T>(
 
   return c.json(response, httpCode);
 };
-
-export { formValidator };

@@ -1,10 +1,10 @@
 import { Hono } from "hono";
-import redis from "../redis";
-import v1Routes from "./v1Routes";
+import { redis } from "../redis";
+import { v1Routes } from "./v1Routes";
 
 const routes = new Hono();
 
-routes.get("/up", async (c) =>  c.json({ message: "API is up" }, 200));
+routes.get("/up", async (c) => c.json({ message: "API is up" }, 200));
 
 routes.get("/up/redis", async (c) => {
   if (await redis.get("is_redis_up")) {
@@ -30,4 +30,4 @@ routes.get("/up/redis", async (c) => {
 
 routes.route("/v1", v1Routes);
 
-export default routes;
+export { routes };

@@ -1,3 +1,3 @@
-import authRulesEnum from "./authRulesEnum";
+import { authRulesEnum } from "./authRulesEnum";
 
 export { authRulesEnum };

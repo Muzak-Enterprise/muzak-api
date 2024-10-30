@@ -1,5 +1,5 @@
-import prisma from "../prisma";
-import { encryptPassword } from "./encryptionService";
+import { db } from "../database";
+import { encryptionService } from "./encryptionService";
 
 export type UserType = {
   id: number;
@@ -15,20 +15,18 @@ type CreateUserType = {
   password: string;
 };
 
-export const removePassword = (
-  user: UserType & { password: string }
-): UserType => {
+const removePassword = (user: UserType & { password: string }): UserType => {
   const { password, ...userWithoutPassword } = user;
 
   return userWithoutPassword;
 };
 
-export const createUser = async (data: CreateUserType): Promise<UserType> => {
+const createUser = async (data: CreateUserType): Promise<UserType> => {
   const { firstName, lastName, email, password } = data;
 
-  const hashedPassword = await encryptPassword(password);
+  const hashedPassword = await encryptionService.encryptPassword(password);
 
-  const user = await prisma.user.create({
+  const user = await db.user.create({
     data: {
       firstName,
       lastName,
@@ -38,4 +36,16 @@ export const createUser = async (data: CreateUserType): Promise<UserType> => {
   });
 
   return removePassword(user);
+};
+
+const getUserById = async (id: number): Promise<UserType | null> => {
+  const user = await db.user.findUnique({ where: { id } });
+
+  return user ? removePassword(user) : null;
+};
+
+export const userService = {
+  removePassword,
+  createUser,
+  getUserById,
 };

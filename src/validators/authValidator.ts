@@ -1,7 +1,7 @@
 import { validator } from "hono/validator";
 import { z } from "zod";
-import { formValidator } from ".";
 import { authRulesEnum } from "../enums/fieldsRules";
+import { formValidator } from "./validator";
 
 export const loginValidator = validator("form", (value, c) =>
   formValidator(

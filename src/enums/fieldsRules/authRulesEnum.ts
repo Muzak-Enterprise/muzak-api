@@ -18,4 +18,4 @@ const authRulesEnum = {
   name,
 } as const;
 
-export default authRulesEnum;
+export { authRulesEnum };

@@ -1,18 +1,18 @@
 import { Context } from "hono";
-import prisma from "../prisma";
-import { comparePassword } from "../services/encryptionService";
-import { generetaJwtToken } from "../services/tokenService";
-import { createUser, removePassword } from "../services/userService";
+import { db } from "../database";
+import { encryptionService } from "../services/encryptionService";
+import { tokenService } from "../services/tokenService";
+import { userService } from "../services/userService";
 
 type LoginForm = {
   email: string;
   password: string;
 };
 
-export const login = async (c: Context) => {
+const login = async (c: Context) => {
   const { email, password }: LoginForm = c.req.valid("form" as never);
 
-  const user = await prisma.user.findUnique({ where: { email } });
+  const user = await db.user.findUnique({ where: { email } });
 
   if (!user) {
     return c.json(
@@ -21,18 +21,18 @@ export const login = async (c: Context) => {
     );
   }
 
-  if (!(await comparePassword(password, user.password))) {
+  if (!(await encryptionService.comparePassword(password, user.password))) {
     return c.json(
       { error: "Vos identifiants de connexion sont incorrects" },
       404
     );
   }
 
-  const token = await generetaJwtToken(user.id);
+  const token = await tokenService.generetaJwtToken(user.id);
 
   return c.json(
     {
-      user: removePassword(user),
+      user: userService.removePassword(user),
       token,
     },
     200
@@ -47,7 +47,7 @@ type RegisterForm = {
   passwordConfirmation: string;
 };
 
-export const register = async (c: Context) => {
+const register = async (c: Context) => {
   const {
     firstName,
     lastName,
@@ -60,13 +60,23 @@ export const register = async (c: Context) => {
     return c.json({ error: "Les mots de passe ne correspondent pas" }, 422);
   }
 
-  if (await prisma.user.findUnique({ where: { email } })) {
+  if (await db.user.findUnique({ where: { email } })) {
     return c.json({ error: "Cet email est déjà utilisé" }, 409);
   }
 
-  const user = await createUser({ firstName, lastName, email, password });
+  const user = await userService.createUser({
+    firstName,
+    lastName,
+    email,
+    password,
+  });
 
-  const token = await generetaJwtToken(user.id);
+  const token = await tokenService.generetaJwtToken(user.id);
 
   return c.json({ user, token }, 201);
+};
+
+export const authController = {
+  login,
+  register,
 };
