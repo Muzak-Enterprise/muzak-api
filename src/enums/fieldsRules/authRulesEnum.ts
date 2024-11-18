@@ -2,6 +2,7 @@ import { z } from "zod";
 
 const name = z
   .string()
+  .max(63)
   .refine((value) => value.replace(/\s+/g, "").length >= 2);
 
 const email = z.string().email();

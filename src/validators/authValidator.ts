@@ -28,8 +28,8 @@ export const registerValidator = validator("form", (value, c) =>
       passwordConfirmation: z.string(),
     }),
     {
-      firstName: "Le prénom doit contenir au moins 2 lettres",
-      lastName: "Le nom doit contenir au moins 2 lettres",
+      firstName: "Le prénom doit contenir au moins 2 lettres et faire moins de 63 caractères",
+      lastName: "Le nom doit contenir au moins 2 lettres et faire moins de 63 caractères",
       email: "L'adresse email est incorrecte",
       password:
         "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule et un chiffre",
