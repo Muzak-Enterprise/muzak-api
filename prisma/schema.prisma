@@ -35,6 +35,7 @@ model Address {
 
 model Group {
   id               Int                @id @default(autoincrement())
+  name             String
   description      String
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
@@ -87,18 +88,18 @@ model GroupInstruments {
 }
 
 model Reservation {
-  id        Int                @id @default(autoincrement())
+  id        Int               @id @default(autoincrement())
   groupId   Int
   userId    Int
   addressId Int
   date      DateTime
   duration  Int
   status    ReservationStatus @default(PENDING)
-  createdAt DateTime           @default(now())
-  updatedAt DateTime           @updatedAt
-  addresse  Address            @relation(fields: [addressId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  group     Group              @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  addresse  Address           @relation(fields: [addressId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  group     Group             @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 enum ReservationStatus {
