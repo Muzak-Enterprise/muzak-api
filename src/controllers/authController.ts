@@ -10,7 +10,7 @@ type LoginForm = {
 };
 
 const login = async (c: Context) => {
-  const { email, password }: LoginForm = c.req.valid("form" as never);
+  const { email, password }: LoginForm = c.req.valid("json" as never);
 
   const user = await db.user.findUnique({ where: { email } });
 
@@ -54,7 +54,7 @@ const register = async (c: Context) => {
     email,
     password,
     passwordConfirmation,
-  }: RegisterForm = c.req.valid("form" as never);
+  }: RegisterForm = c.req.valid("json" as never);
 
   if (password !== passwordConfirmation) {
     return c.json({ error: "Les mots de passe ne correspondent pas" }, 422);

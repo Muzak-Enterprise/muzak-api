@@ -3,7 +3,7 @@ import { z } from "zod";
 import { formValidator } from "./validator";
 import { authRulesEnum } from "../enums/fieldsRules";
 
-export const patchUserValidator = validator("form", (value, c) =>
+export const patchUserValidator = validator("json", (value, c) =>
   formValidator(
     value,
     c,

@@ -3,7 +3,7 @@ import { z } from "zod";
 import { authRulesEnum } from "../enums/fieldsRules";
 import { formValidator } from "./validator";
 
-export const loginValidator = validator("form", (value, c) =>
+export const loginValidator = validator("json", (value, c) =>
   formValidator(
     value,
     c,
@@ -16,7 +16,7 @@ export const loginValidator = validator("form", (value, c) =>
   )
 );
 
-export const registerValidator = validator("form", (value, c) =>
+export const registerValidator = validator("json", (value, c) =>
   formValidator(
     value,
     c,

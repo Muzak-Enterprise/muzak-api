@@ -3,7 +3,6 @@ import { encryptionService } from "../services/encryptionService";
 import { tokenService } from "../services/tokenService";
 import { userService } from "../services/userService";
 import { RegisterForm } from "./authController";
-import { groupService } from "../services/groupService";
 
 const getUserById = async (c: Context) => {
   const userId = c.req.param("id");
@@ -30,7 +29,7 @@ const patchUser = async (c: Context) => {
     oldPassword,
     password,
     passwordConfirmation,
-  }: PatchUserForm = c.req.valid("form" as never);
+  }: PatchUserForm = c.req.valid("json" as never);
 
   const userId = c.req.param("id");
   const authHeader = c.req.header("Authorization")!;
