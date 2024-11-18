@@ -27,7 +27,6 @@ const patchUser = async (c: Context) => {
   const {
     firstName,
     lastName,
-    email,
     oldPassword,
     password,
     passwordConfirmation,
@@ -47,7 +46,6 @@ const patchUser = async (c: Context) => {
 
   if (firstName) data.firstName = firstName;
   if (lastName) data.lastName = lastName;
-  if (email) data.email = email;
   if (oldPassword || password || passwordConfirmation) {
     if (!oldPassword) {
       return c.json(
@@ -94,7 +92,6 @@ const patchUser = async (c: Context) => {
   const user = await userService.modify(parseInt(userId), {
     firstName,
     lastName,
-    email,
     password,
   });
 
