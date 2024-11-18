@@ -19,12 +19,24 @@ const create = async (data: GenreDataType): Promise<GenreType> => {
   return genre;
 };
 
-const createMany = async (data: GenreDataType[]): Promise<GenreType[]> => {
-  const genres = await db.genre.createManyAndReturn({
-    data: data,
+const createMany = async (data: string[]): Promise<number> => {
+  const existingGenres = await db.genre.findMany({
+    where: {
+      genre: {
+        in: data,
+      },
+    },
   });
 
-  return genres;
+  const existingNames = existingGenres.map((genre) => genre.genre);
+
+  const filteredGenres = data.filter((genre) => !existingNames.includes(genre));
+
+  const genres = await db.genre.createMany({
+    data: filteredGenres.map((genre) => ({ genre })),
+  });
+
+  return genres.count;
 };
 
 const getAllGenres = async (): Promise<GenreType[]> => {

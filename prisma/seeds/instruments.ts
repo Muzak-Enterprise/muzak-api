@@ -1,0 +1,55 @@
+import { instrumentService } from "../../src/services/instrumentService";
+
+export async function generateInstruments() {
+  const count = await instrumentService.createMany(instruments);
+
+  console.log(`Generated ${count} instruments`);
+}
+
+const instruments = [
+  "Accordéon",
+  "Alto",
+  "Banjo",
+  "Basson",
+  "Bugle",
+  "Carillon",
+  "Caisse claire",
+  "Clarinette",
+  "Clavicorde",
+  "Contrebasse",
+  "Cor anglais",
+  "Cor d'harmonie",
+  "Cymbales",
+  "Euphonium",
+  "Flûte à bec",
+  "Flûte traversière",
+  "Guitare acoustique",
+  "Guitare électrique",
+  "Guitare classique",
+  "Glockenspiel",
+  "Harpe",
+  "Hautbois",
+  "Harmonica",
+  "Luth",
+  "Mandoline",
+  "Marimba",
+  "Orgue classique",
+  "Orgue Hammond",
+  "Piano",
+  "Piccolo",
+  "Saxophone alto",
+  "Saxophone baryton",
+  "Saxophone soprano",
+  "Saxophone ténor",
+  "Synthétiseur",
+  "Tambour",
+  "Timbales",
+  "Triangle",
+  "Trombone",
+  "Trompette",
+  "Tuba",
+  "Vibraphone",
+  "Violon",
+  "Violoncelle",
+  "Xylophone",
+];

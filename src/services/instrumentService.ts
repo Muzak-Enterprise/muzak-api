@@ -10,23 +10,37 @@ type InstrumentDataType = {
 };
 
 const create = async (data: InstrumentDataType): Promise<InstrumentType> => {
-  const Instrument = await db.instrument.create({
+  const instrument = await db.instrument.create({
     data: {
       instrument: data.instrument,
     },
   });
 
-  return Instrument;
+  return instrument;
 };
 
-const createMany = async (
-  data: InstrumentDataType[]
-): Promise<InstrumentType[]> => {
-  const instruments = await db.instrument.createManyAndReturn({
-    data: data,
+const createMany = async (data: string[]): Promise<number> => {
+  const existingInstruments = await db.instrument.findMany({
+    where: {
+      instrument: {
+        in: data,
+      },
+    },
   });
 
-  return instruments;
+  const existingNames = existingInstruments.map(
+    (instrument) => instrument.instrument
+  );
+
+  const filteredInstruments = data.filter(
+    (instrument) => !existingNames.includes(instrument)
+  );
+
+  const instruments = await db.instrument.createMany({
+    data: filteredInstruments.map((instrument) => ({ instrument })),
+  });
+
+  return instruments.count;
 };
 
 const getAllInstruments = async (): Promise<InstrumentType[]> => {

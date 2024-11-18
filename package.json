@@ -4,18 +4,23 @@
     "start": "tsx watch src/server.ts",
     "watch": "docker-compose watch"
   },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seeds/index.ts"
+  },
   "dependencies": {
-    "@hono/node-server": "^1.13.1",
-    "@prisma/client": "^5.20.0",
+    "@hono/node-server": "^1.13.7",
+    "@prisma/client": "^5.22.0",
     "bcrypt": "^5.1.1",
-    "hono": "^4.6.3",
+    "hono": "^4.6.10",
     "ioredis": "^5.4.1",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
-    "@types/node": "^20.11.17",
-    "prisma": "^5.20.0",
-    "tsx": "^4.7.1"
+    "@types/node": "^20.17.6",
+    "prisma": "^5.22.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
   }
 }
