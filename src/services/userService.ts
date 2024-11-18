@@ -8,20 +8,14 @@ export type UserType = {
   email: string;
 };
 
-type CreateUserType = {
+type UserDataType = {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
 };
 
-const removePassword = (user: UserType & { password: string }): UserType => {
-  const { password, ...userWithoutPassword } = user;
-
-  return userWithoutPassword;
-};
-
-const createUser = async (data: CreateUserType): Promise<UserType> => {
+const create = async (data: UserDataType): Promise<UserType> => {
   const { firstName, lastName, email, password } = data;
 
   const hashedPassword = await encryptionService.encryptPassword(password);
@@ -38,14 +32,43 @@ const createUser = async (data: CreateUserType): Promise<UserType> => {
   return removePassword(user);
 };
 
+const modify = async (
+  id: number,
+  data: Partial<UserDataType>
+): Promise<UserType> => {
+  if (data.password) {
+    data.password = await encryptionService.encryptPassword(data.password);
+  }
+
+  const user = await db.user.update({ where: { id }, data });
+
+  return removePassword(user);
+};
+
+const removePassword = (user: UserType & { password: string }): UserType => {
+  const { password, ...userWithoutPassword } = user;
+
+  return userWithoutPassword;
+};
+
 const getUserById = async (id: number): Promise<UserType | null> => {
   const user = await db.user.findUnique({ where: { id } });
 
   return user ? removePassword(user) : null;
 };
 
+const getFullUserById = async (
+  id: number
+): Promise<(UserType & { password: string }) | null> => {
+  const user = await db.user.findUnique({ where: { id } });
+
+  return user;
+};
+
 export const userService = {
+  create,
+  modify,
   removePassword,
-  createUser,
   getUserById,
+  getFullUserById,
 };

@@ -39,7 +39,7 @@ const login = async (c: Context) => {
   );
 };
 
-type RegisterForm = {
+export type RegisterForm = {
   firstName: string;
   lastName: string;
   email: string;
@@ -64,7 +64,7 @@ const register = async (c: Context) => {
     return c.json({ error: "Cet email est déjà utilisé" }, 409);
   }
 
-  const user = await userService.createUser({
+  const user = await userService.create({
     firstName,
     lastName,
     email,

@@ -4,6 +4,7 @@ import { JWT_SECRET } from "../constant";
 import { authController } from "../controllers/authController";
 import { userController } from "../controllers/userController";
 import { loginValidator, registerValidator } from "../validators/authValidator";
+import { patchUserValidator } from "../validators/userValidator";
 
 const v1Routes = new Hono();
 
@@ -18,6 +19,7 @@ appRoutes.use("/*", jwt({ secret: JWT_SECRET }));
 const usersRoutes = new Hono();
 
 usersRoutes.get("/:id", userController.getUserById);
+usersRoutes.patch("/:id", patchUserValidator, userController.patchUser);
 
 appRoutes.route("/users", usersRoutes);
 
