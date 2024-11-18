@@ -3,6 +3,7 @@ import { encryptionService } from "../services/encryptionService";
 import { tokenService } from "../services/tokenService";
 import { userService } from "../services/userService";
 import { RegisterForm } from "./authController";
+import { groupService } from "../services/groupService";
 
 const getUserById = async (c: Context) => {
   const userId = c.req.param("id");
