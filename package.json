@@ -2,10 +2,11 @@
   "name": "muzak-api",
   "scripts": {
     "start": "tsx watch src/server.ts",
-    "watch": "docker-compose watch"
+    "watch": "docker-compose watch",
+    "seed": "npx prisma db seed"
   },
   "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seeds/index.ts"
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} src/seeds/index.ts"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.7",
