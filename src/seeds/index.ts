@@ -1,8 +1,10 @@
 import { db } from "../../src/database";
+import { generateGenres } from "./genres";
 import { generateInstruments } from "./instruments";
 
 async function main() {
   await generateInstruments();
+  await generateGenres();
 }
 
 main()
