@@ -19,6 +19,7 @@ const appRoutes = new Hono();
 appRoutes.use("/*", jwt({ secret: JWT_SECRET }));
 
 const usersRoutes = new Hono();
+usersRoutes.get("/me", userController.getMe);
 usersRoutes.get("/:id", userController.getUserById);
 usersRoutes.patch("/:id", patchUserValidator, userController.patchUser);
 
@@ -37,7 +38,6 @@ appRoutes.route("/instruments", instrumentsRoutes);
 appRoutes.route("/groups", groupRoutes);
 
 v1Routes.route("/auth", authRoutes);
-v1Routes.route("", appRoutes);
-
+v1Routes.route("/", appRoutes);
 
 export { v1Routes };

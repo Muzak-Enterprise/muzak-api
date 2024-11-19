@@ -4,6 +4,13 @@ import { tokenService } from "../services/tokenService";
 import { userService } from "../services/userService";
 import { RegisterForm } from "./authController";
 
+const getMe = async (c: Context) => {
+  const authHeader = c.req.header("Authorization")!;
+  const tokenId = (await tokenService.verifyBearerToken(authHeader)).sub;
+
+  return _getById(c, tokenId);
+};
+
 const getUserById = async (c: Context) => {
   const userId = c.req.param("id");
   const authHeader = c.req.header("Authorization")!;
@@ -11,11 +18,7 @@ const getUserById = async (c: Context) => {
 
   if (userId !== tokenId.toString()) return c.text("Unauthorized", 401);
 
-  const user = await userService.getUserById(parseInt(userId));
-
-  if (!user) return c.text("Something went wrong", 500);
-
-  return c.json(user, 200);
+  return _getById(c, parseInt(userId));
 };
 
 type PatchUserForm = Partial<RegisterForm> & {
@@ -95,7 +98,16 @@ const patchUser = async (c: Context) => {
   return c.json(user, 200);
 };
 
+const _getById = async (c: Context, id: number) => {
+  const user = await userService.getUserById(id);
+
+  if (!user) return c.text("Something went wrong", 500);
+
+  return c.json(user, 200);
+};
+
 export const userController = {
+  getMe,
   getUserById,
   patchUser,
 };

@@ -29,7 +29,7 @@ const password = z
       "Votre mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule et un chiffre",
   })
   .max(255, {
-    message: "Votre mot de passe ne peut pas excéder 255 caractères",
+    message: "Votre mot de passe ne peut pas dépasser 255 caractères",
   })
   .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[1-9]).*$/, {
     message:
