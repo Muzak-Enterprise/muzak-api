@@ -72,7 +72,23 @@ const getAllGroups = async (): Promise<GroupType[]> => {
   return groups;
 };
 
+const getGroupById = async (
+  id: number
+): Promise<GroupTypeWithAssociations | null> => {
+  const group = await db.group.findUnique({
+    where: { id },
+    include: {
+      userGroups: true,
+      groupInstruments: true,
+      groupGenres: true,
+    },
+  });
+
+  return group;
+};
+
 export const groupService = {
   create,
   getAllGroups,
+  getGroupById,
 };

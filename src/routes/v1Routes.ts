@@ -32,6 +32,7 @@ instrumentsRoutes.get("/", instrumentController.get);
 
 const groupRoutes = new Hono();
 groupRoutes.get("/", groupController.get);
+groupRoutes.get("/:id", groupController.getGroupById);
 groupRoutes.post("/", getGroupsValidator, groupController.post);
 
 appRoutes.route("/users", usersRoutes);

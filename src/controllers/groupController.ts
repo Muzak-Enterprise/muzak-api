@@ -32,7 +32,16 @@ const post = async (c: Context) => {
   return c.json({ group }, 201);
 };
 
+const getGroupById = async (c: Context) => {
+  const id = c.req.param("id");
+
+  const group = await groupService.getGroupById(parseInt(id));
+
+  return c.json(group, 200);
+};
+
 export const groupController = {
   get,
   post,
+  getGroupById,
 };
