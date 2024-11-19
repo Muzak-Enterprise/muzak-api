@@ -1,18 +1,16 @@
-import { validator } from "hono/validator";
+import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
-import { formValidator } from "./validator";
 import { authRulesEnum } from "../enums/fieldsRules/authRulesEnum";
+import { formValidator } from "./validator";
 
-export const patchUsersValidator = validator("json", (value, c) =>
-  formValidator(
-    c,
-    value,
-    z.object({
-      firstName: authRulesEnum.firstName.optional(),
-      lastName: authRulesEnum.lastName.optional(),
-      oldPassword: authRulesEnum.oldPassword.optional(),
-      password: authRulesEnum.password.optional(),
-      passwordConfirmation: authRulesEnum.passwordConfirmation.optional(),
-    })
-  )
+export const patchUsersValidator = zValidator(
+  "json",
+  z.object({
+    firstName: authRulesEnum.firstName.optional(),
+    lastName: authRulesEnum.lastName.optional(),
+    oldPassword: authRulesEnum.oldPassword.optional(),
+    password: authRulesEnum.password.optional(),
+    passwordConfirmation: authRulesEnum.passwordConfirmation.optional(),
+  }),
+  (hook, c) => formValidator(hook, c)
 );

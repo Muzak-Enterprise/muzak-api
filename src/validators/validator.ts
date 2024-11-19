@@ -1,22 +1,27 @@
 import { Context } from "hono";
-import { ParsedFormValue } from "hono/types";
-import { ZodError, ZodSchema } from "zod";
+import { ZodError } from "zod";
+
+type Hook =
+  | {
+      success: true;
+    }
+  | {
+      success: false;
+      error: ZodError;
+    };
 
 export const formValidator = async <T>(
+  hook: Hook,
   c: Context,
-  value: Record<string, ParsedFormValue | ParsedFormValue[]>,
-  schema: ZodSchema<T>,
-  callback?: (parsed: ZodError<T>["formErrors"]["fieldErrors"]) => any
+  callback?: (error: ZodError["formErrors"]["fieldErrors"]) => any
 ) => {
-  const parsed = await schema.safeParseAsync(value);
-
-  if (parsed.success) return parsed.data;
+  if (hook.success) return;
 
   if (callback) {
-    return callback(parsed.error.formErrors.fieldErrors);
+    return callback(hook.error.formErrors.fieldErrors);
   } else {
     const errorsJoined: Record<string, string> = {};
-    Object.entries(parsed.error.formErrors.fieldErrors).forEach(
+    Object.entries(hook.error.formErrors.fieldErrors).forEach(
       ([key, value]) => (errorsJoined[key] = (value as string[]).join(" "))
     );
 
@@ -26,3 +31,5 @@ export const formValidator = async <T>(
     );
   }
 };
+
+export const paramValidator = () => {};

@@ -2,13 +2,13 @@ import { Hono } from "hono";
 import { jwt } from "hono/jwt";
 import { JWT_SECRET } from "../constant";
 import { authController } from "../controllers/authController";
+import { genreController } from "../controllers/genreController";
+import { groupController } from "../controllers/groupController";
+import { instrumentController } from "../controllers/instrumentController";
 import { userController } from "../controllers/userController";
 import { loginValidator, registerValidator } from "../validators/authValidator";
-import { patchUsersValidator } from "../validators/userValidator";
-import { genreController } from "../controllers/genreController";
-import { instrumentController } from "../controllers/instrumentController";
-import { groupController } from "../controllers/groupController";
 import { getGroupsValidator } from "../validators/groupValidator";
+import { patchUsersValidator } from "../validators/userValidator";
 
 const v1Routes = new Hono();
 
