@@ -1,9 +1,9 @@
 import { validator } from "hono/validator";
 import { z } from "zod";
-import { authRulesEnum } from "../enums/fieldsRules";
 import { formValidator } from "./validator";
+import { authRulesEnum } from "../enums/fieldsRules/authRulesEnum";
 
-export const patchUserValidator = validator("json", (value, c) =>
+export const patchUsersValidator = validator("json", (value, c) =>
   formValidator(
     c,
     value,

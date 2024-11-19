@@ -1,8 +1,8 @@
 import { validator } from "hono/validator";
 import { z } from "zod";
-import { authRulesEnum } from "../enums/fieldsRules";
 import { validatorService } from "../services/validatorService";
 import { formValidator } from "./validator";
+import { authRulesEnum } from "../enums/fieldsRules/authRulesEnum";
 
 export const loginValidator = validator("json", (value, c) =>
   formValidator(

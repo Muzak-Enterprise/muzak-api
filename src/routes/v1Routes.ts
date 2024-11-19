@@ -4,10 +4,11 @@ import { JWT_SECRET } from "../constant";
 import { authController } from "../controllers/authController";
 import { userController } from "../controllers/userController";
 import { loginValidator, registerValidator } from "../validators/authValidator";
-import { patchUserValidator } from "../validators/userValidator";
+import { patchUsersValidator } from "../validators/userValidator";
 import { genreController } from "../controllers/genreController";
 import { instrumentController } from "../controllers/instrumentController";
 import { groupController } from "../controllers/groupController";
+import { getGroupsValidator } from "../validators/groupValidator";
 
 const v1Routes = new Hono();
 
@@ -21,7 +22,7 @@ appRoutes.use("/*", jwt({ secret: JWT_SECRET }));
 const usersRoutes = new Hono();
 usersRoutes.get("/me", userController.getMe);
 usersRoutes.get("/:id", userController.getUserById);
-usersRoutes.patch("/:id", patchUserValidator, userController.patchUser);
+usersRoutes.patch("/:id", patchUsersValidator, userController.patchUser);
 
 const genresRoutes = new Hono();
 genresRoutes.get("/", genreController.get);
@@ -31,6 +32,7 @@ instrumentsRoutes.get("/", instrumentController.get);
 
 const groupRoutes = new Hono();
 groupRoutes.get("/", groupController.get);
+groupRoutes.post("/", getGroupsValidator, groupController.post);
 
 appRoutes.route("/users", usersRoutes);
 appRoutes.route("/genres", genresRoutes);
