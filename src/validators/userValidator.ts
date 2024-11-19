@@ -1,23 +1,18 @@
 import { validator } from "hono/validator";
 import { z } from "zod";
-import { formValidator } from "./validator";
 import { authRulesEnum } from "../enums/fieldsRules";
+import { formValidator } from "./validator";
 
 export const patchUserValidator = validator("json", (value, c) =>
   formValidator(
-    value,
     c,
+    value,
     z.object({
-      firstName: authRulesEnum.name.optional(),
-      lastName: authRulesEnum.name.optional(),
-      oldPassword: z.string().optional(),
+      firstName: authRulesEnum.firstName.optional(),
+      lastName: authRulesEnum.lastName.optional(),
+      oldPassword: authRulesEnum.oldPassword.optional(),
       password: authRulesEnum.password.optional(),
-      passwordConfirmation: z.string().optional(),
-    }),
-    {
-      firstName: "Le prénom doit contenir au moins 2 lettres",
-      lastName: "Le nom doit contenir au moins 2 lettres",
-      password: "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule et un chiffre",
-    }
+      passwordConfirmation: authRulesEnum.passwordConfirmation.optional(),
+    })
   )
 );

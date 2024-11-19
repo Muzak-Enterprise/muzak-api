@@ -12,31 +12,20 @@ type LoginForm = {
 const login = async (c: Context) => {
   const { email, password }: LoginForm = c.req.valid("json" as never);
 
-  const user = await db.user.findUnique({ where: { email } });
+  const fullUser = (await userService.getFullUserByEmail(email))!;
 
-  if (!user) {
+  if (!(await encryptionService.comparePassword(password, fullUser.password))) {
     return c.json(
       { error: "Vos identifiants de connexion sont incorrects" },
       404
     );
   }
 
-  if (!(await encryptionService.comparePassword(password, user.password))) {
-    return c.json(
-      { error: "Vos identifiants de connexion sont incorrects" },
-      404
-    );
-  }
+  const user = userService.removePassword(fullUser);
 
   const token = await tokenService.generetaJwtToken(user.id);
 
-  return c.json(
-    {
-      user: userService.removePassword(user),
-      token,
-    },
-    200
-  );
+  return c.json({ user, token }, 200);
 };
 
 export type RegisterForm = {
@@ -58,10 +47,6 @@ const register = async (c: Context) => {
 
   if (password !== passwordConfirmation) {
     return c.json({ error: "Les mots de passe ne correspondent pas" }, 422);
-  }
-
-  if (await db.user.findUnique({ where: { email } })) {
-    return c.json({ error: "Cet email est déjà utilisé" }, 409);
   }
 
   const user = await userService.create({

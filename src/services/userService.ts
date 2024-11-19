@@ -51,6 +51,20 @@ const removePassword = (user: UserType & { password: string }): UserType => {
   return userWithoutPassword;
 };
 
+const getUserByEmail = async (email: string): Promise<UserType | null> => {
+  const user = await db.user.findUnique({ where: { email } });
+
+  return user ? removePassword(user) : null;
+};
+
+const getFullUserByEmail = async (
+  email: string
+): Promise<(UserType & { password: string }) | null> => {
+  const user = await db.user.findUnique({ where: { email } });
+
+  return user;
+};
+
 const getUserById = async (id: number): Promise<UserType | null> => {
   const user = await db.user.findUnique({ where: { id } });
 
@@ -69,6 +83,8 @@ export const userService = {
   create,
   modify,
   removePassword,
+  getUserByEmail,
+  getFullUserByEmail,
   getUserById,
   getFullUserById,
 };

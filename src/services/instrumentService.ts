@@ -49,8 +49,17 @@ const getAllInstruments = async (): Promise<InstrumentType[]> => {
   return instruments;
 };
 
+const getInstrumentById = async (
+  id: number
+): Promise<InstrumentType | null> => {
+  const instrument = await db.instrument.findUnique({ where: { id } });
+
+  return instrument;
+};
+
 export const instrumentService = {
   create,
   createMany,
   getAllInstruments,
+  getInstrumentById,
 };

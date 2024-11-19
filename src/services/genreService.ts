@@ -45,8 +45,15 @@ const getAllGenres = async (): Promise<GenreType[]> => {
   return genres;
 };
 
+const getGenreById = async (id: number): Promise<GenreType | null> => {
+  const genre = await db.genre.findUnique({ where: { id } });
+
+  return genre;
+};
+
 export const genreService = {
   create,
   createMany,
   getAllGenres,
+  getGenreById,
 };

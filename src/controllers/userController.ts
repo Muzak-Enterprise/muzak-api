@@ -37,9 +37,7 @@ const patchUser = async (c: Context) => {
 
   if (userId !== tokenId.toString()) return c.text("Unauthorized", 401);
 
-  const oldUser = await userService.getFullUserById(parseInt(userId));
-
-  if (!oldUser) return c.text("Something went wrong", 500);
+  const oldUser = (await userService.getFullUserById(parseInt(userId)))!;
 
   const data = Object.create(null);
 
