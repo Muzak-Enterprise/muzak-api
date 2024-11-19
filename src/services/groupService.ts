@@ -67,7 +67,13 @@ const create = async (data: GroupData): Promise<GroupTypeWithAssociations> => {
 };
 
 const getAllGroups = async (): Promise<GroupType[]> => {
-  const groups = await db.group.findMany();
+  const groups = await db.group.findMany({
+    include: {
+      userGroups: true,
+      groupInstruments: true,
+      groupGenres: true,
+    },
+  });
 
   return groups;
 };
