@@ -7,23 +7,22 @@ export type GroupType = {
   id: number;
   name: string;
   description: string;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type GroupTypeWithAssociations = GroupType & {
   userGroups: {
     id: number;
-    userId: number;
-    groupId: number;
+    user: UserType;
   }[];
   groupInstruments: {
     id: number;
-    instrumentId: number;
-    groupId: number;
+    instrument: InstrumentType;
   }[];
   groupGenres: {
     id: number;
-    genreId: number;
-    groupId: number;
+    genre: GenreType;
   }[];
 };
 
@@ -34,6 +33,36 @@ export type GroupData = {
   instruments: InstrumentType["id"][];
   genres: GenreType["id"][];
 };
+
+const include = {
+  userGroups: {
+    select: {
+      id: true,
+      user: {
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          email: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      },
+    },
+  },
+  groupInstruments: {
+    select: {
+      id: true,
+      instrument: true,
+    },
+  },
+  groupGenres: {
+    select: {
+      id: true,
+      genre: true,
+    },
+  },
+} as const;
 
 const create = async (data: GroupData): Promise<GroupTypeWithAssociations> => {
   const group = await db.group.create({
@@ -56,24 +85,14 @@ const create = async (data: GroupData): Promise<GroupTypeWithAssociations> => {
         })),
       },
     },
-    include: {
-      userGroups: true,
-      groupInstruments: true,
-      groupGenres: true,
-    },
+    include,
   });
 
   return group;
 };
 
 const getAllGroups = async (): Promise<GroupType[]> => {
-  const groups = await db.group.findMany({
-    include: {
-      userGroups: true,
-      groupInstruments: true,
-      groupGenres: true,
-    },
-  });
+  const groups = await db.group.findMany({ include });
 
   return groups;
 };
@@ -83,11 +102,7 @@ const getGroupById = async (
 ): Promise<GroupTypeWithAssociations | null> => {
   const group = await db.group.findUnique({
     where: { id },
-    include: {
-      userGroups: true,
-      groupInstruments: true,
-      groupGenres: true,
-    },
+    include,
   });
 
   return group;

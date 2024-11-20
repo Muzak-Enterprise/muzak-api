@@ -37,6 +37,8 @@ const getGroupById = async (c: Context) => {
 
   const group = await groupService.getGroupById(parseInt(id));
 
+  if (!group) return c.json({ error: "Groupe non existant" }, 404);
+
   return c.json(group, 200);
 };
 

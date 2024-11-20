@@ -6,6 +6,8 @@ export type UserType = {
   firstName: string;
   lastName: string;
   email: string;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 type FullUserType = UserType & { password: string };
@@ -92,7 +94,21 @@ const _getFullUser = async ({
       email,
     },
     include: {
-      userGroups: true,
+      userGroups: {
+        select: {
+          id: true,
+          user: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              email: true,
+              createdAt: true,
+              updatedAt: true,
+            },
+          },
+        },
+      },
     },
   });
 
