@@ -8,6 +8,8 @@ export type UserType = {
   email: string;
 };
 
+type FullUserType = UserType & { password: string };
+
 type UserDataType = {
   firstName: string;
   lastName: string;
@@ -45,36 +47,54 @@ const modify = async (
   return removePassword(user);
 };
 
-const removePassword = (user: UserType & { password: string }): UserType => {
+const removePassword = (user: FullUserType): UserType => {
   const { password, ...userWithoutPassword } = user;
 
   return userWithoutPassword;
 };
 
 const getUserByEmail = async (email: string): Promise<UserType | null> => {
-  const user = await db.user.findUnique({ where: { email } });
+  const user = await _getFullUser({ email });
 
   return user ? removePassword(user) : null;
 };
 
 const getFullUserByEmail = async (
   email: string
-): Promise<(UserType & { password: string }) | null> => {
-  const user = await db.user.findUnique({ where: { email } });
+): Promise<FullUserType | null> => {
+  const user = await _getFullUser({ email });
 
   return user;
 };
 
 const getUserById = async (id: number): Promise<UserType | null> => {
-  const user = await db.user.findUnique({ where: { id } });
+  const user = await _getFullUser({ id });
 
   return user ? removePassword(user) : null;
 };
 
-const getFullUserById = async (
-  id: number
-): Promise<(UserType & { password: string }) | null> => {
-  const user = await db.user.findUnique({ where: { id } });
+const getFullUserById = async (id: number): Promise<FullUserType | null> => {
+  const user = await _getFullUser({ id });
+
+  return user;
+};
+
+const _getFullUser = async ({
+  id,
+  email,
+}: {
+  id?: number;
+  email?: string;
+}): Promise<FullUserType | null> => {
+  const user = await db.user.findUnique({
+    where: {
+      id,
+      email,
+    },
+    include: {
+      userGroups: true,
+    },
+  });
 
   return user;
 };
