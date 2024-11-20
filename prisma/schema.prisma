@@ -46,13 +46,13 @@ model Group {
 }
 
 model UserGroups {
-  id        Int       @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   userId    Int
   groupId   Int
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
-  group     Group     @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model Genre {
@@ -68,13 +68,13 @@ model Instrument {
 }
 
 model GroupGenres {
-  id        Int       @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   groupId   Int
   genreId   Int
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
-  genre     Genre     @relation(fields: [genreId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  group     Group     @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  genre     Genre    @relation(fields: [genreId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model GroupInstruments {

@@ -43,8 +43,8 @@ CREATE TABLE "UserGroups" (
     "id" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
     "groupId" INTEGER NOT NULL,
-    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "UserGroups_pkey" PRIMARY KEY ("id")
 );
@@ -70,8 +70,8 @@ CREATE TABLE "GroupGenres" (
     "id" SERIAL NOT NULL,
     "groupId" INTEGER NOT NULL,
     "genreId" INTEGER NOT NULL,
-    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "GroupGenres_pkey" PRIMARY KEY ("id")
 );
