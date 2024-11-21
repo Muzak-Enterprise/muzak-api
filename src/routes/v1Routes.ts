@@ -12,6 +12,7 @@ import { patchUsersValidator } from "../validators/userValidator";
 import { idParamValidator } from "../validators/validator";
 import { addressController } from "../controllers/addressController";
 import { reservationController } from "../controllers/reservationController";
+import { postAddressValidator } from "../validators/addressValidator";
 
 const v1Routes = new Hono();
 
@@ -44,7 +45,7 @@ groupRoutes.get("/:id", idParamValidator, groupController.getGroupById);
 groupRoutes.post("/", getGroupsValidator, groupController.post);
 
 const addressRoutes = new Hono();
-addressRoutes.post("/", addressController.post);
+addressRoutes.post("/", postAddressValidator, addressController.post);
 
 const reservationRoutes = new Hono();
 reservationRoutes.post("/", reservationController.post);
