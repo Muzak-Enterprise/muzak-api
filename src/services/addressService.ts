@@ -33,7 +33,16 @@ const modify = async (addressId: number, data: Partial<AddressDataType>) => {
   return address;
 };
 
+const getAllUserAddresses = async (userId: number) => {
+  const addresses = await db.address.findMany({
+    where: { userId },
+  });
+
+  return addresses;
+};
+
 export const addressService = {
   create,
   modify,
+  getAllUserAddresses,
 };

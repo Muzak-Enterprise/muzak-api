@@ -46,6 +46,7 @@ groupRoutes.get("/:id", idParamValidator, groupController.getGroupById);
 groupRoutes.post("/", getGroupsValidator, groupController.post);
 
 const addressRoutes = new Hono();
+addressRoutes.get("/", addressController.get);
 addressRoutes.post("/", postAddressValidator, addressController.post);
 
 const reservationRoutes = new Hono();

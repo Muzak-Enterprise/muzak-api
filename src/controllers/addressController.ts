@@ -8,6 +8,15 @@ type PostAddressForm = {
   postcode: string;
 };
 
+const get = async (c: Context) => {
+  const authHeader = c.req.header("Authorization")!;
+  const tokenId = (await tokenService.verifyBearerToken(authHeader)).sub;
+
+  const addresses = await addressService.getAllUserAddresses(tokenId);
+
+  return c.json({ addresses });
+};
+
 const post = async (c: Context) => {
   const { name, city, postcode }: PostAddressForm = c.req.valid(
     "json" as never
@@ -27,5 +36,6 @@ const post = async (c: Context) => {
 };
 
 export const addressController = {
+  get,
   post,
 };
