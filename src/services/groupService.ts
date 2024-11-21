@@ -10,6 +10,10 @@ export type GroupData = {
 };
 
 const select = {
+  name: true,
+  description: true,
+  createdAt: true,
+  updatedAt: true,
   userGroups: {
     select: {
       id: true,
