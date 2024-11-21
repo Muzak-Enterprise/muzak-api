@@ -35,6 +35,7 @@ const select = {
       genre: true,
     },
   },
+  reservations: true,
 } as const;
 
 const create = async (data: GroupData) => {
