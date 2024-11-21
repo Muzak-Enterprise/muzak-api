@@ -10,6 +10,8 @@ import { loginValidator, registerValidator } from "../validators/authValidator";
 import { getGroupsValidator } from "../validators/groupValidator";
 import { patchUsersValidator } from "../validators/userValidator";
 import { idParamValidator } from "../validators/validator";
+import { addressController } from "../controllers/addressController";
+import { reservationController } from "../controllers/reservationController";
 
 const v1Routes = new Hono();
 
@@ -41,10 +43,18 @@ groupRoutes.get("/", groupController.get);
 groupRoutes.get("/:id", idParamValidator, groupController.getGroupById);
 groupRoutes.post("/", getGroupsValidator, groupController.post);
 
+const addressRoutes = new Hono();
+addressRoutes.post("/", addressController.post);
+
+const reservationRoutes = new Hono();
+reservationRoutes.post("/", reservationController.post);
+
 appRoutes.route("/users", usersRoutes);
 appRoutes.route("/genres", genresRoutes);
 appRoutes.route("/instruments", instrumentsRoutes);
 appRoutes.route("/groups", groupRoutes);
+appRoutes.route("/addresses", addressRoutes);
+appRoutes.route("/reservations", reservationRoutes);
 
 v1Routes.route("/auth", authRoutes);
 v1Routes.route("/", appRoutes);
