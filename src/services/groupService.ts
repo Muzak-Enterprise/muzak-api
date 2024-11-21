@@ -1,52 +1,20 @@
 import { db } from "../database";
-import { GenreType } from "./genreService";
-import { InstrumentType } from "./instrumentService";
-import { UserType } from "./userService";
-
-export type GroupType = {
-  id: number;
-  name: string;
-  description: string;
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-export type GroupTypeWithAssociations = GroupType & {
-  userGroups: {
-    id: number;
-    user: UserType;
-  }[];
-  groupInstruments: {
-    id: number;
-    instrument: InstrumentType;
-  }[];
-  groupGenres: {
-    id: number;
-    genre: GenreType;
-  }[];
-};
+import { userService } from "./userService";
 
 export type GroupData = {
   name: string;
   description: string;
-  userId: UserType["id"];
-  instruments: InstrumentType["id"][];
-  genres: GenreType["id"][];
+  userId: number;
+  instruments: number[];
+  genres: number[];
 };
 
-const include = {
+const select = {
   userGroups: {
     select: {
       id: true,
       user: {
-        select: {
-          id: true,
-          firstName: true,
-          lastName: true,
-          email: true,
-          createdAt: true,
-          updatedAt: true,
-        },
+        select: userService.select,
       },
     },
   },
@@ -64,7 +32,7 @@ const include = {
   },
 } as const;
 
-const create = async (data: GroupData): Promise<GroupTypeWithAssociations> => {
+const create = async (data: GroupData) => {
   const group = await db.group.create({
     data: {
       name: data.name,
@@ -85,30 +53,29 @@ const create = async (data: GroupData): Promise<GroupTypeWithAssociations> => {
         })),
       },
     },
-    include,
+    select,
   });
 
   return group;
 };
 
-const getAllGroups = async (): Promise<GroupType[]> => {
-  const groups = await db.group.findMany({ include });
+const getAllGroups = async () => {
+  const groups = await db.group.findMany({ select });
 
   return groups;
 };
 
-const getGroupById = async (
-  id: number
-): Promise<GroupTypeWithAssociations | null> => {
+const getGroupById = async (id: number) => {
   const group = await db.group.findUnique({
     where: { id },
-    include,
+    select,
   });
 
   return group;
 };
 
 export const groupService = {
+  select,
   create,
   getAllGroups,
   getGroupById,

@@ -1,15 +1,10 @@
 import { db } from "../database";
 
-export type InstrumentType = {
-  id: number;
-  instrument: string;
-};
-
 type InstrumentDataType = {
   instrument: string;
 };
 
-const create = async (data: InstrumentDataType): Promise<InstrumentType> => {
+const create = async (data: InstrumentDataType) => {
   const instrument = await db.instrument.create({
     data: {
       instrument: data.instrument,
@@ -43,15 +38,13 @@ const createMany = async (data: string[]): Promise<number> => {
   return instruments.count;
 };
 
-const getAllInstruments = async (): Promise<InstrumentType[]> => {
+const getAllInstruments = async () => {
   const instruments = await db.instrument.findMany();
 
   return instruments;
 };
 
-const getInstrumentById = async (
-  id: number
-): Promise<InstrumentType | null> => {
+const getInstrumentById = async (id: number) => {
   const instrument = await db.instrument.findUnique({ where: { id } });
 
   return instrument;

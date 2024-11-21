@@ -1,15 +1,10 @@
 import { db } from "../database";
 
-export type GenreType = {
-  id: number;
-  genre: string;
-};
-
 type GenreDataType = {
   genre: string;
 };
 
-const create = async (data: GenreDataType): Promise<GenreType> => {
+const create = async (data: GenreDataType) => {
   const genre = await db.genre.create({
     data: {
       genre: data.genre,
@@ -39,13 +34,13 @@ const createMany = async (data: string[]): Promise<number> => {
   return genres.count;
 };
 
-const getAllGenres = async (): Promise<GenreType[]> => {
+const getAllGenres = async () => {
   const genres = await db.genre.findMany();
 
   return genres;
 };
 
-const getGenreById = async (id: number): Promise<GenreType | null> => {
+const getGenreById = async (id: number) => {
   const genre = await db.genre.findUnique({ where: { id } });
 
   return genre;

@@ -21,7 +21,7 @@ const login = async (c: Context) => {
     );
   }
 
-  const user = userService.removePassword(fullUser);
+  const { password: _, ...user } = fullUser;
 
   const token = await tokenService.generetaJwtToken(user.id);
 
