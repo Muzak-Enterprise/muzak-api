@@ -2,7 +2,6 @@
   "name": "muzak-api",
   "scripts": {
     "start": "tsx watch src/server.ts",
-    "watch": "docker-compose watch",
     "seed": "npx prisma db seed"
   },
   "prisma": {
