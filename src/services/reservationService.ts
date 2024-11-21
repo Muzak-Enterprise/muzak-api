@@ -25,6 +25,16 @@ const create = async (data: ReservationDataType) => {
   return reservation;
 };
 
+const patch = async (id: number, data: Partial<ReservationDataType>) => {
+  const reservation = await db.reservation.update({
+    where: { id },
+    data,
+  });
+
+  return reservation;
+};
+
 export const reservationService = {
   create,
+  patch,
 };

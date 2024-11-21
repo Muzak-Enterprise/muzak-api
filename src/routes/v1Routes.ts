@@ -57,6 +57,16 @@ reservationRoutes.post(
   postReservationValidator,
   reservationController.post
 );
+reservationRoutes.patch(
+  "/:id/confirm",
+  idParamValidator,
+  reservationController.confirmReservation
+);
+reservationRoutes.patch(
+  "/:id/cancel",
+  idParamValidator,
+  reservationController.cancelReservation
+);
 
 const userGroupsRoutes = new Hono();
 userGroupsRoutes.post("/", postUserGroupValidator, userGroupController.post);

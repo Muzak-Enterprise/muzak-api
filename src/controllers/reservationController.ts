@@ -28,6 +28,28 @@ const post = async (c: Context) => {
   return c.json({ reservation }, 201);
 };
 
+const confirmReservation = async (c: Context) => {
+  const id = c.req.param("id");
+
+  const reservation = await reservationService.patch(parseInt(id), {
+    status: "CONFIRMED",
+  });
+
+  return c.json({ reservation }, 200);
+};
+
+const cancelReservation = async (c: Context) => {
+  const id = c.req.param("id");
+
+  const reservation = await reservationService.patch(parseInt(id), {
+    status: "CANCELLED",
+  });
+
+  return c.json({ reservation }, 200);
+};
+
 export const reservationController = {
   post,
+  confirmReservation,
+  cancelReservation,
 };
