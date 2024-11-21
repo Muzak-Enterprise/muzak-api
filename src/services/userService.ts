@@ -53,6 +53,14 @@ const modify = async (id: number, data: Partial<UserDataType>) => {
   return user;
 };
 
+const getAllUsers = async () => {
+  const users = await db.user.findMany({
+    select,
+  });
+
+  return users;
+};
+
 const getUserByEmail = async (email: string) => {
   const user = await db.user.findUnique({
     where: { email },
@@ -94,4 +102,5 @@ export const userService = {
   getFullUserByEmail,
   getUserById,
   getFullUserById,
+  getAllUsers,
 };

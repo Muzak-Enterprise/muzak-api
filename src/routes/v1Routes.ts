@@ -27,6 +27,7 @@ const appRoutes = new Hono();
 appRoutes.use("/*", jwt({ secret: JWT_SECRET }));
 
 const usersRoutes = new Hono();
+usersRoutes.get("/", userController.get);
 usersRoutes.get("/me", userController.getMe);
 usersRoutes.get("/:id", idParamValidator, userController.getUserById);
 usersRoutes.patch(

@@ -11,6 +11,12 @@ const getMe = async (c: Context) => {
   return _getById(c, tokenId);
 };
 
+const get = async (c: Context) => {
+  const users = await userService.getAllUsers();
+
+  return c.json(users, 200);
+};
+
 const getUserById = async (c: Context) => {
   const userId = c.req.param("id");
   const authHeader = c.req.header("Authorization")!;
@@ -107,6 +113,7 @@ const _getById = async (c: Context, id: number) => {
 };
 
 export const userController = {
+  get,
   getMe,
   getUserById,
   patchUser,
