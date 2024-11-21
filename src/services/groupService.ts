@@ -10,6 +10,7 @@ export type GroupData = {
 };
 
 const select = {
+  id: true,
   name: true,
   description: true,
   createdAt: true,
