@@ -13,6 +13,7 @@ import { idParamValidator } from "../validators/validator";
 import { addressController } from "../controllers/addressController";
 import { reservationController } from "../controllers/reservationController";
 import { postAddressValidator } from "../validators/addressValidator";
+import { postReservationValidator } from "../validators/reservationValidator";
 
 const v1Routes = new Hono();
 
@@ -48,7 +49,11 @@ const addressRoutes = new Hono();
 addressRoutes.post("/", postAddressValidator, addressController.post);
 
 const reservationRoutes = new Hono();
-reservationRoutes.post("/", reservationController.post);
+reservationRoutes.post(
+  "/",
+  postReservationValidator,
+  reservationController.post
+);
 
 appRoutes.route("/users", usersRoutes);
 appRoutes.route("/genres", genresRoutes);
